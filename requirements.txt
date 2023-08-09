@@ -1,0 +1,7 @@
+SpeechRecognition
+pyttsx3
+llama_index
+openai
+PyGithub
+pyaudio
+comtypes
