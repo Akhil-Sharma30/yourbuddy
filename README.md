@@ -5,7 +5,7 @@
 [![discussion](https://img.shields.io/static/v1?label=Discussions&message=Ask&color=blue&logo=github)](https://github.com/Akhil-Sharma30/Baldev/discussions)
 
 [![Python Versions](https://img.shields.io/pypi/pyversions/Baldev)](https://pypi.org/project/Baldev/)
-![License](https://img.shields.io/github/license/Akhil-Sharma30/Baldev?color=blue)
+![License](https://img.shields.io/github/LICENSE/Akhil-Sharma30/Baldev?color=blue)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)\
 
 ## Install dependencies
