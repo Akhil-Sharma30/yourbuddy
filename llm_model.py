@@ -11,25 +11,44 @@ import pypandoc
 from pathlib import Path
 from llama_index import download_loader
 
-"""# Github Configeration"""
-
+# OPENAI key 
 openai.api_key = os.environ.get("OPENAPI_API_KEY")
-
-# username = 'Akhil-Sharma30'
-
 
 """# Reading the Files for LLM Model"""
 class Llm_Training:
-    def convert_to_markdown(input_file, output_file):
-    
+
+    def get_file_input():
+    # Ask the user for their choice (link or upload)
+        print("How would you like to provide the file?")
+        print("1. Link")
+        print("2. Upload")
+        
+        choice = input("Enter your choice (1 or 2): ")
+
+        # Validate the user's choice
+        if choice not in ['1', '2']:
+            print("Invalid choice. Please enter '1' for link or '2' for upload.")
+            return None
+
+        if choice == '1':
+            # If the user chose 'link', ask for the link and store it in a variable
+            file_link = input("Enter the file link: ")
+            return file_link
+        else:
+            # If the user chose 'upload', you can implement the file upload logic here
+            # and return the uploaded file's path or content.
+            uploaded_file = input("Upload the file: ")  # Replace with your upload logic
+            return uploaded_file
+        
     # Converts a file to markdown format.
+    def convert_to_markdown(input_file, output_file):
 
-    # Args:
-    # input_file (str): The path to the input file.
-    # output_file (str): The path to the output markdown file.
+        # Args:
+        # input_file (str): The path to the input file.
+        # output_file (str): The path to the output markdown file.
 
-    # Returns:
-    # bool: True if conversion is successful, False otherwise.
+        # Returns:
+        # bool: True if conversion is successful, False otherwise.
     
         try:
             # Convert the input file to markdown format
@@ -38,70 +57,53 @@ class Llm_Training:
         except Exception as e:
             print(f"Conversion error: {str(e)}")
             return False
+        
+    def chatbot_choice():
+        # Ask the user for their choice (personal data or general chatbot)
+        print("Choose an option:")
+        print("1. Train on personal data")
+        print("2. Use a general chatbot (like OpenAI)")
 
-    # Example usage:
-    if __name__ == "__main__":
-        input_file = "/content/covid_toy.csv"  # Replace with your input file path
-        output_file = "output.md"  # Replace with your desired output file path
+        choice = input("Enter your choice (1 or 2): ")
 
-        if convert_to_markdown(input_file, output_file):
-            print(f"File '{input_file}' converted to markdown successfully and saved as '{output_file}'.")
+        # Validate the user's choice
+        if choice not in ['1', '2']:
+            print("Invalid choice. Please enter '1' for personal data or '2' for a general chatbot.")
+            return
+
+        if choice == '1':
+            # User selected training on personal data
+            print("Training on personal data...")  # Replace with your logic
+            # Perform training on personal data here
+
         else:
-            print(f"Failed to convert '{input_file}' to markdown.")
+            # User selected using a general chatbot
+            print("Using a general chatbot like OpenAI...")  # Replace with your logic
+            # Use a general chatbot like OpenAI here
 
-    # Specify the path to the repository
-    repo_dir = "/content/Akhil-Sharma30.github.io"
-
-    # Check if the repository exists and delete it if it does
-    if os.path.exists(repo_dir):
-        shutil.rmtree(repo_dir)
-
-
-    # def combine_md_files(folder_path):
-    #     MarkdownReader = download_loader("MarkdownReader")
-    #     loader = MarkdownReader()
-
-    #     md_files = [file for file in folder_path.glob('*.md')]
-    #     documents = None
-
-    #     for file_path in md_files:
-    #         document = loader.load_data(file=file_path)
-    #         documents += document
-
-    #     return documents
-
-    # folder_path = Path('/content/Akhil-Sharma30.github.io/content')
-    #combined_documents = combine_md_files(folder_path)
-
-    # combined_documents will be a list containing the contents of all .md files in the folder
     def chatbot_function(query):
+        # Set up the OpenAI API key
         openai.api_key = os.environ.get("OPENAPI_API_KEY")
-        RemoteReader = download_loader("RemoteReader")
 
-        loader = RemoteReader()
+        # Load the MarkdownReader
+        MarkdownReader = download_loader("MarkdownReader")
+        loader = MarkdownReader()
 
-        document1 = loader.load_data(url="https://raw.githubusercontent.com/Akhil-Sharma30/Akhil-Sharma30.github.io/main/assets/README.md")
-        document2 = loader.load_data(url="https://raw.githubusercontent.com/Akhil-Sharma30/Akhil-Sharma30.github.io/main/content/about.md")
-        document3 = loader.load_data(url="https://raw.githubusercontent.com/Akhil-Sharma30/Akhil-Sharma30.github.io/main/content/cv.md")
-        document4 = loader.load_data(url="https://raw.githubusercontent.com/Akhil-Sharma30/Akhil-Sharma30.github.io/main/content/post.md")
-        document5 = loader.load_data(url="https://raw.githubusercontent.com/Akhil-Sharma30/Akhil-Sharma30.github.io/main/content/opensource.md")
-        document6 = loader.load_data(url="https://raw.githubusercontent.com/Akhil-Sharma30/Akhil-Sharma30.github.io/main/content/supervised.md")
+        # Load user data from the "./output.md" file
+        user_data_reader = loader.load_data(file="./output.md")
 
-        data = document1+ document2 + document3+ document4 + document5+document6
+        # Vector Embedding
+        index = VectorStoreIndex.from_documents(user_data_reader)
 
-
-        """# Vector Embedding"""
-
-        index = VectorStoreIndex.from_documents(data)
-
+        # Create a query engine
         query_engine = index.as_query_engine()
-        # response = query_engine.query("know akhil?")
-        # print(response)
 
+        # Query the engine with the user's query
         response = query_engine.query(query)
         return response
 
     def Generative_response(prompt):
+        # Generate a response using the GPT-3.5-turbo model
         gpt_response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -117,3 +119,12 @@ class Llm_Training:
             presence_penalty=0
         )
         return gpt_response.choices[0].message["content"]
+    
+# Example usage:
+if __name__ == "__main__":
+    output_file = "output.md"  # Replace with your desired output file path
+    input_file = Llm_Training.get_file_input()  # Replace with your input file path
+    if Llm_Training.convert_to_markdown(input_file, output_file):
+        print(f"File '{input_file}' converted to markdown successfully and saved as '{output_file}'.")
+    else:
+        print(f"Failed to convert '{input_file}' to markdown.")
