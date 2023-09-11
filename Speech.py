@@ -18,7 +18,3 @@ def speak(message):
     engine.say(message) 
     engine.runAndWait()
      
-    
-    
-
-speak("Hello, DD behen ka lund hai")
