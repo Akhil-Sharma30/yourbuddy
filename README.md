@@ -6,7 +6,7 @@
 
 [![Python Versions](https://img.shields.io/pypi/pyversions/Baldev)](https://pypi.org/project/Baldev/)
 ![License](https://img.shields.io/github/license/Akhil-Sharma30/Baldev?color=blue)
-[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)\
+[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Install dependencies
 ### MacOS
