@@ -7,9 +7,9 @@ build-backend = "hatchling.build"
 name = "yourbuddy"
 authors = [
   { name = "Akhil Sharma", email = "akhilsharma.off@gmail.com" },
-  { name = "Sahil Singh", email = "sahil456q@gmail.com" },
+  { name = "Sahil Singh", email = "sahil445q@gmail.com" },
 ]
-description = "third helping hand"
+description = "your third hand."
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
